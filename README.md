@@ -2,9 +2,11 @@
 
 A tool to manage AI skills for **Claude Code** and **Antigravity**. Browse skills from multiple source directories and add/remove them from your project through a visual interface.
 
+![Clazy Skill Manager screenshot](Resource/image.png)
+
 Two versions are available:
 
-- **[extension/](extension/)** — VS Code extension (runs inside VS Code / Antigravity)
+- **[extension/](extension/)** — VS Code extension ([Install from Marketplace](https://marketplace.visualstudio.com/items?itemName=dn9uy3n.clazy-skill-ai-agent))
 - **[app/](app/)** — Desktop application (standalone, runs on Windows / macOS / Linux)
 
 ## Skill Directory Structure
@@ -40,7 +42,19 @@ When applied, each skill is copied to `{project}/.claude/commands/{skill-name}.m
 
 ## Version 1: VS Code Extension
 
-### Build & Install
+### Install from Marketplace (easiest)
+
+Open VS Code / Antigravity → Extensions tab → search **"Clazy Skill AI Agent"**, or visit:
+
+👉 https://marketplace.visualstudio.com/items?itemName=dn9uy3n.clazy-skill-ai-agent
+
+Or install from CLI:
+
+```bash
+code --install-extension dn9uy3n.clazy-skill-ai-agent
+```
+
+### Build & Install from source
 
 ```bash
 cd extension
@@ -82,7 +96,6 @@ Get the latest installer from the [GitHub Releases](../../releases) page:
 | OS | File |
 |----|------|
 | Windows | `Clazy Skill AI Agent Setup X.Y.Z.exe` |
-| macOS | `Clazy Skill AI Agent-X.Y.Z.dmg` |
 | Linux | `clazy-skill-ai-agent-app-X.Y.Z.tar.gz` |
 
 ### Run in Development Mode
