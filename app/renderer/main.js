@@ -1,5 +1,5 @@
 // @ts-check
-const api = window.clazyApi;
+const api = window.lazyApi;
 
 /** @typedef {{id:string,name:string,description:string,sourcePath:string,sourceDir:string,format:string,isInstalled:boolean,body:string}} SkillInfo */
 

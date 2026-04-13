@@ -16,6 +16,6 @@ const api = {
     ipcRenderer.invoke('skills:apply', allSkills, selectedIds, projectPath),
 };
 
-contextBridge.exposeInMainWorld('clazyApi', api);
+contextBridge.exposeInMainWorld('lazyApi', api);
 
-export type ClazyApi = typeof api;
+export type LazyApi = typeof api;

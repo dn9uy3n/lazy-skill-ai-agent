@@ -45,7 +45,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: clazy-skill-${{ matrix.os }}
+          name: lazy-skill-${{ matrix.os }}
           path: app/dist/${{ matrix.artifact }}
 
       - name: Attach to release

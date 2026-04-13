@@ -1,4 +1,4 @@
-# Clazy Skill AI Agent
+# Lazy Skill AI Agent
 
 VS Code extension to manage AI skills for Claude Code and Antigravity.
 
@@ -30,4 +30,4 @@ npm run package   # Build .vsix
 
 ## Testing
 
-Press F5 in VS Code to launch Extension Development Host. Run command "Clazy: Open Skill Manager".
+Press F5 in VS Code to launch Extension Development Host. Run command "Lazy: Open Skill Manager".

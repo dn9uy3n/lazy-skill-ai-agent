@@ -1,6 +1,6 @@
 {
-  "name": "clazy-skill-ai-agent",
-  "displayName": "Clazy Skill AI Agent",
+  "name": "lazy-skill-ai-agent",
+  "displayName": "Lazy Skill AI Agent",
   "description": "Manage AI skills for Claude Code and Antigravity projects",
   "version": "0.1.0",
   "publisher": "dn9uy3n",
@@ -15,14 +15,14 @@
   "contributes": {
     "commands": [
       {
-        "command": "clazy-skill.openManager",
-        "title": "Clazy: Open Skill Manager"
+        "command": "lazy-skill.openManager",
+        "title": "Lazy: Open Skill Manager"
       }
     ],
     "configuration": {
-      "title": "Clazy Skill AI Agent",
+      "title": "Lazy Skill AI Agent",
       "properties": {
-        "clazy-skill-ai-agent.skillDirectories": {
+        "lazy-skill-ai-agent.skillDirectories": {
           "type": "array",
           "default": [],
           "items": {

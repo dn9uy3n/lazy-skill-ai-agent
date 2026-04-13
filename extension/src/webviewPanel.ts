@@ -3,9 +3,9 @@ import { SkillInfo, TargetPlatform, WebviewMessage, ExtensionMessage } from './t
 import { scanDirectories, getInstalledSkillNames, markInstalled } from './skillScanner';
 import { applyChanges } from './skillInstaller';
 
-export class ClazySkillPanel {
-  public static readonly viewType = 'clazySkillManager';
-  private static instance: ClazySkillPanel | undefined;
+export class LazySkillPanel {
+  public static readonly viewType = 'lazySkillManager';
+  private static instance: LazySkillPanel | undefined;
 
   private readonly panel: vscode.WebviewPanel;
   private readonly extensionUri: vscode.Uri;
@@ -16,14 +16,14 @@ export class ClazySkillPanel {
   public static createOrShow(extensionUri: vscode.Uri): void {
     const column = vscode.window.activeTextEditor?.viewColumn ?? vscode.ViewColumn.One;
 
-    if (ClazySkillPanel.instance) {
-      ClazySkillPanel.instance.panel.reveal(column);
+    if (LazySkillPanel.instance) {
+      LazySkillPanel.instance.panel.reveal(column);
       return;
     }
 
     const panel = vscode.window.createWebviewPanel(
-      ClazySkillPanel.viewType,
-      'Clazy Skill Manager',
+      LazySkillPanel.viewType,
+      'Lazy Skill Manager',
       column,
       {
         enableScripts: true,
@@ -32,7 +32,7 @@ export class ClazySkillPanel {
       },
     );
 
-    ClazySkillPanel.instance = new ClazySkillPanel(panel, extensionUri);
+    LazySkillPanel.instance = new LazySkillPanel(panel, extensionUri);
   }
 
   private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
@@ -51,7 +51,7 @@ export class ClazySkillPanel {
   }
 
   private dispose(): void {
-    ClazySkillPanel.instance = undefined;
+    LazySkillPanel.instance = undefined;
     this.panel.dispose();
     for (const d of this.disposables) {
       d.dispose();
@@ -64,7 +64,7 @@ export class ClazySkillPanel {
   }
 
   private getDirectories(): string[] {
-    const config = vscode.workspace.getConfiguration('clazy-skill-ai-agent');
+    const config = vscode.workspace.getConfiguration('lazy-skill-ai-agent');
     return config.get<string[]>('skillDirectories', []);
   }
 
@@ -110,7 +110,7 @@ export class ClazySkillPanel {
           const newDir = uris[0].fsPath;
           if (!dirs.includes(newDir)) {
             dirs.push(newDir);
-            const config = vscode.workspace.getConfiguration('clazy-skill-ai-agent');
+            const config = vscode.workspace.getConfiguration('lazy-skill-ai-agent');
             await config.update('skillDirectories', dirs, vscode.ConfigurationTarget.Global);
           }
           await this.refresh();
@@ -120,7 +120,7 @@ export class ClazySkillPanel {
 
       case 'removeDirectory': {
         const dirs = this.getDirectories().filter(d => d !== msg.directory);
-        const config = vscode.workspace.getConfiguration('clazy-skill-ai-agent');
+        const config = vscode.workspace.getConfiguration('lazy-skill-ai-agent');
         await config.update('skillDirectories', dirs, vscode.ConfigurationTarget.Global);
         await this.refresh();
         break;
@@ -175,11 +175,11 @@ export class ClazySkillPanel {
     content="default-src 'none'; style-src ${webview.cspSource} 'nonce-${nonce}'; script-src 'nonce-${nonce}';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="${cssUri}" rel="stylesheet">
-  <title>Clazy Skill Manager</title>
+  <title>Lazy Skill Manager</title>
 </head>
 <body>
   <div class="container">
-    <h2>Clazy Skill AI Agent</h2>
+    <h2>Lazy Skill AI Agent</h2>
 
     <section class="platform-section">
       <label class="radio-label">

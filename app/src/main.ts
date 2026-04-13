@@ -11,7 +11,7 @@ function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: 900,
     height: 750,
-    title: 'Clazy Skill AI Agent',
+    title: 'Lazy Skill AI Agent',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,

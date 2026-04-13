@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import { ClazySkillPanel } from './webviewPanel';
+import { LazySkillPanel } from './webviewPanel';
 
 export function activate(context: vscode.ExtensionContext) {
-  const command = vscode.commands.registerCommand('clazy-skill.openManager', () => {
-    ClazySkillPanel.createOrShow(context.extensionUri);
+  const command = vscode.commands.registerCommand('lazy-skill.openManager', () => {
+    LazySkillPanel.createOrShow(context.extensionUri);
   });
 
   context.subscriptions.push(command);
