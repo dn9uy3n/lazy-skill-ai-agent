@@ -26,7 +26,7 @@ npm run package   # Build .vsix
 - Use `vscode.workspace.fs` for all file operations (not Node.js fs).
 - Frontmatter parsing is regex-based (no yaml library).
 - All styles use `--vscode-*` CSS variables for theme compatibility.
-- Target: `{project}/.claude/commands/{skill-name}.md` for both Claude Code and Antigravity.
+- Target: `{project}/.claude/skills/{skill-name}/` (entire skill directory is copied, preserving markdown + scripts).
 
 ## Testing
 

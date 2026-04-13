@@ -2,8 +2,8 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { SkillInfo } from './types';
 
-function getCommandsDir(projectPath: string): string {
-  return path.join(projectPath, '.claude', 'commands');
+function getSkillsDir(projectPath: string): string {
+  return path.join(projectPath, '.claude', 'skills');
 }
 
 async function ensureDir(dirPath: string): Promise<void> {
@@ -14,22 +14,42 @@ async function ensureDir(dirPath: string): Promise<void> {
   }
 }
 
+/**
+ * Copy the entire skill source directory into the project's .claude/skills/ folder.
+ */
 export async function installSkill(skill: SkillInfo, projectPath: string): Promise<void> {
-  const commandsDir = getCommandsDir(projectPath);
-  await ensureDir(commandsDir);
+  const skillsDir = getSkillsDir(projectPath);
+  await ensureDir(skillsDir);
 
-  const sourceUri = vscode.Uri.file(skill.sourcePath);
-  const targetUri = vscode.Uri.file(path.join(commandsDir, `${skill.name}.md`));
+  const sourceDir = path.dirname(skill.sourcePath);
+  const targetDir = path.join(skillsDir, skill.name);
 
-  await vscode.workspace.fs.copy(sourceUri, targetUri, { overwrite: true });
+  // Remove existing target if present (overwrite behavior)
+  try {
+    await vscode.workspace.fs.delete(vscode.Uri.file(targetDir), {
+      recursive: true,
+      useTrash: false,
+    });
+  } catch {
+    // not present
+  }
+
+  await vscode.workspace.fs.copy(
+    vscode.Uri.file(sourceDir),
+    vscode.Uri.file(targetDir),
+    { overwrite: true },
+  );
 }
 
 export async function uninstallSkill(skillName: string, projectPath: string): Promise<void> {
-  const targetUri = vscode.Uri.file(path.join(getCommandsDir(projectPath), `${skillName}.md`));
+  const targetDir = path.join(getSkillsDir(projectPath), skillName);
   try {
-    await vscode.workspace.fs.delete(targetUri);
+    await vscode.workspace.fs.delete(vscode.Uri.file(targetDir), {
+      recursive: true,
+      useTrash: false,
+    });
   } catch {
-    // file doesn't exist, ignore
+    // doesn't exist, ignore
   }
 }
 

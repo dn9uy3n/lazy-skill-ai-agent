@@ -114,12 +114,12 @@ export async function scanDirectories(dirs: string[]): Promise<SkillInfo[]> {
 }
 
 export async function getInstalledSkillNames(projectPath: string): Promise<string[]> {
-  const commandsDir = path.join(projectPath, '.claude', 'commands');
+  const skillsDir = path.join(projectPath, '.claude', 'skills');
   try {
-    const entries = await vscode.workspace.fs.readDirectory(vscode.Uri.file(commandsDir));
+    const entries = await vscode.workspace.fs.readDirectory(vscode.Uri.file(skillsDir));
     return entries
-      .filter(([name, type]) => type === vscode.FileType.File && name.endsWith('.md'))
-      .map(([name]) => path.basename(name, '.md'));
+      .filter(([, type]) => type === vscode.FileType.Directory)
+      .map(([name]) => name);
   } catch {
     return [];
   }

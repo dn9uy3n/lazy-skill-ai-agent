@@ -110,12 +110,19 @@ export async function scanDirectories(dirs: string[]): Promise<SkillInfo[]> {
 }
 
 export async function getInstalledSkillNames(projectPath: string): Promise<string[]> {
-  const commandsDir = path.join(projectPath, '.claude', 'commands');
+  const skillsDir = path.join(projectPath, '.claude', 'skills');
   try {
-    const entries = await fs.readdir(commandsDir);
-    return entries
-      .filter(n => n.endsWith('.md'))
-      .map(n => path.basename(n, '.md'));
+    const names: string[] = [];
+    const entries = await fs.readdir(skillsDir);
+    for (const name of entries) {
+      try {
+        const stat = await fs.stat(path.join(skillsDir, name));
+        if (stat.isDirectory()) names.push(name);
+      } catch {
+        // skip
+      }
+    }
+    return names;
   } catch {
     return [];
   }

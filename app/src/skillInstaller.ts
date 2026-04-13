@@ -2,24 +2,29 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { SkillInfo } from './types';
 
-function getCommandsDir(projectPath: string): string {
-  return path.join(projectPath, '.claude', 'commands');
+function getSkillsDir(projectPath: string): string {
+  return path.join(projectPath, '.claude', 'skills');
 }
 
+/**
+ * Copy the entire skill source directory into the project's .claude/skills/ folder.
+ */
 export async function installSkill(skill: SkillInfo, projectPath: string): Promise<void> {
-  const commandsDir = getCommandsDir(projectPath);
-  await fs.mkdir(commandsDir, { recursive: true });
-  const target = path.join(commandsDir, `${skill.name}.md`);
-  await fs.copyFile(skill.sourcePath, target);
+  const skillsDir = getSkillsDir(projectPath);
+  await fs.mkdir(skillsDir, { recursive: true });
+
+  const sourceDir = path.dirname(skill.sourcePath);
+  const targetDir = path.join(skillsDir, skill.name);
+
+  // Remove existing target if present (overwrite behavior)
+  await fs.rm(targetDir, { recursive: true, force: true });
+
+  await fs.cp(sourceDir, targetDir, { recursive: true });
 }
 
 export async function uninstallSkill(skillName: string, projectPath: string): Promise<void> {
-  const target = path.join(getCommandsDir(projectPath), `${skillName}.md`);
-  try {
-    await fs.unlink(target);
-  } catch {
-    // not found, ignore
-  }
+  const targetDir = path.join(getSkillsDir(projectPath), skillName);
+  await fs.rm(targetDir, { recursive: true, force: true });
 }
 
 export interface ApplyResult {
