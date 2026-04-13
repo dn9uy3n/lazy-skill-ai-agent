@@ -1,0 +1,29 @@
+# Build output
+**/out/
+**/dist/
+
+# Dependencies
+**/node_modules/
+
+# Packaged extension
+*.vsix
+
+# VS Code
+.vscode-test/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+.idea/
+
+# Local Claude workspace
+.claude/
+PLAN.md

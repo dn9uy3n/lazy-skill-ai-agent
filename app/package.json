@@ -1,0 +1,46 @@
+{
+  "name": "clazy-skill-ai-agent-app",
+  "version": "0.1.0",
+  "description": "Standalone desktop application to manage AI skills for Claude Code and Antigravity",
+  "main": "out/main.js",
+  "author": "dn9uy3n",
+  "license": "MIT",
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "start": "npm run compile && electron .",
+    "build:win": "npm run compile && electron-builder --win",
+    "build:mac": "npm run compile && electron-builder --mac",
+    "build:linux": "npm run compile && electron-builder --linux",
+    "build:all": "npm run compile && electron-builder -mwl"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "electron": "^32.0.0",
+    "electron-builder": "^25.0.0",
+    "typescript": "^5.3.0"
+  },
+  "build": {
+    "appId": "com.dn9uy3n.clazy-skill-ai-agent",
+    "productName": "Clazy Skill AI Agent",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "out/**/*",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.developer-tools"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Development"
+    }
+  }
+}

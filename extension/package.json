@@ -1,0 +1,47 @@
+{
+  "name": "clazy-skill-ai-agent",
+  "displayName": "Clazy Skill AI Agent",
+  "description": "Manage AI skills for Claude Code and Antigravity projects",
+  "version": "0.1.0",
+  "publisher": "dn9uy3n",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "clazy-skill.openManager",
+        "title": "Clazy: Open Skill Manager"
+      }
+    ],
+    "configuration": {
+      "title": "Clazy Skill AI Agent",
+      "properties": {
+        "clazy-skill-ai-agent.skillDirectories": {
+          "type": "array",
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "description": "Paths to directories containing AI skills (commands/*.md or skills/*/SKILL.md)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.0.0",
+    "typescript": "^5.3.0"
+  }
+}

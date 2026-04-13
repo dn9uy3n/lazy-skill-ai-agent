@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline';">
+  <title>Clazy Skill AI Agent</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Clazy Skill AI Agent</h1>
+    </header>
+
+    <section class="project-section">
+      <h3>Project Path</h3>
+      <div class="path-row">
+        <span id="project-path" class="path-display">No project selected</span>
+        <button id="btn-select-project" class="btn btn-secondary">Browse...</button>
+      </div>
+    </section>
+
+    <section class="platform-section">
+      <h3>Target Platform</h3>
+      <label class="radio-label">
+        <input type="radio" name="platform" value="claude-code" checked>
+        Claude Code
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="platform" value="antigravity">
+        Antigravity
+      </label>
+    </section>
+
+    <section class="directories-section">
+      <h3>Skill Directories</h3>
+      <div id="dir-list"></div>
+      <button id="btn-add-dir" class="btn btn-secondary">+ Add Directory</button>
+    </section>
+
+    <section class="skills-section">
+      <div class="skills-header">
+        <h3>Available Skills</h3>
+        <input type="text" id="filter-input" placeholder="Filter skills..." />
+      </div>
+      <div id="skill-list" class="skill-list"></div>
+    </section>
+
+    <section class="description-section">
+      <h3>Description</h3>
+      <div id="skill-description" class="description-box">Select a skill to see its description.</div>
+    </section>
+
+    <footer class="actions-section">
+      <span id="status-msg" class="status-msg"></span>
+      <button id="btn-cancel" class="btn btn-secondary">Cancel</button>
+      <button id="btn-apply" class="btn btn-primary">Apply</button>
+    </footer>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

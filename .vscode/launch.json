@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/extension"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/extension/out/**/*.js"
+      ],
+      "preLaunchTask": "npm: compile - extension"
+    },
+    {
+      "name": "Run Electron App",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/app",
+      "runtimeExecutable": "${workspaceFolder}/app/node_modules/.bin/electron",
+      "runtimeArgs": ["."],
+      "outFiles": ["${workspaceFolder}/app/out/**/*.js"],
+      "preLaunchTask": "npm: compile - app"
+    }
+  ]
+}
