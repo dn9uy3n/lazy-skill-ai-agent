@@ -46,6 +46,32 @@ When applied, the **entire skill folder** (markdown, scripts, helpers — everyt
 
 The platform toggle at the top of the UI controls which folder is read from / written to. Switching platforms updates the install state of each skill in the list accordingly.
 
+### Auto-generated skills index (`SKILL.md`)
+
+After every Apply, an index file is generated at the **root of the skills folder** — for example `{project}/.claude/skills/SKILL.md`. It lists every installed skill with:
+
+- **Title** (from the skill's `name` frontmatter)
+- **When to use** (from the `description` frontmatter)
+- **Location** (relative path to the skill's main `.md` file)
+
+The purpose is to let an AI agent quickly discover the right skill without scanning every subfolder. The index is regenerated on each Apply and deleted automatically when no skills remain. Do not edit it manually — changes will be overwritten.
+
+Example:
+
+```markdown
+# Skills Index
+
+## Available skills
+
+### commit
+- **When to use:** Auto-generate commit messages from staged changes
+- **Location:** `./commit/SKILL.md`
+
+### review
+- **When to use:** Review code for quality and potential issues
+- **Location:** `./review/SKILL.md`
+```
+
 ## Rule Files
 
 In addition to skills, you can also manage **rule files** — single `.md` / `.mdc` / `.txt` files that get copied into the workspace's rules directory.
