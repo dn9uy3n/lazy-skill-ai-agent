@@ -2,6 +2,13 @@
 
 All notable changes to the "Lazy Skill AI Agent" extension are documented here.
 
+## [0.9.0]
+
+### Added
+
+- **Kimi Code support** as a fifth target platform. Skills install to `{project}/.kimi-code/skills/{skill-name}/`. Kimi Code has no rules folder, so a checked rule is merged into the managed block inside `{project}/AGENTS.md` — the same mechanism ZCode uses.
+- Apply now warns when a skill's frontmatter `name`/`description` is missing on any platform whose target tool fails to load such skills, not only on platforms with a description length cap — Kimi Code drops a directory-form `SKILL.md` missing either field (and documents no length cap).
+
 ## [0.8.1]
 
 ### Fixed

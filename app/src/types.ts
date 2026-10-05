@@ -20,7 +20,7 @@ export interface RuleInfo {
   body?: string;
 }
 
-export type TargetPlatform = 'claude-code' | 'antigravity' | 'cursor' | 'zcode';
+export type TargetPlatform = 'claude-code' | 'antigravity' | 'cursor' | 'zcode' | 'kimi';
 
 export interface AppConfig {
   skillDirectories: string[];

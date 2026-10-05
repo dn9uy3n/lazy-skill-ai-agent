@@ -1,7 +1,7 @@
 # Lazy Skill AI Agent (Desktop App)
 
 Electron desktop twin of the VS Code extension in `extension/`. Manages AI skills and rules for
-Claude Code, Antigravity, Cursor, and ZCode (z.ai) from a standalone window instead of a webview.
+Claude Code, Antigravity, Cursor, ZCode (z.ai), and Kimi Code from a standalone window instead of a webview.
 
 `platforms.ts` and `agentsMd.ts` are meant to be **byte-identical to their `extension/src/`
 counterparts except for their header comment** (each names the other tree as "the mirror"); every

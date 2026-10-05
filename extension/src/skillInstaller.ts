@@ -202,7 +202,8 @@ async function removeExisting(targetPath: string): Promise<string | null> {
  */
 async function validateForPlatform(skill: SkillInfo, platform: TargetPlatform): Promise<string[]> {
   const desc = getPlatform(platform);
-  if (desc.maxDescriptionChars === undefined) return [];
+  const maxDescriptionChars = desc.maxDescriptionChars;
+  if (maxDescriptionChars === undefined && !desc.requiresSkillFrontmatter) return [];
 
   const warnings: string[] = [];
   try {
@@ -215,9 +216,9 @@ async function validateForPlatform(skill: SkillInfo, platform: TargetPlatform): 
     }
     if (typeof rawDescription !== 'string' || rawDescription.trim() === '') {
       warnings.push('has no frontmatter `description` — the target tool drops skills without one.');
-    } else if (rawDescription.length > desc.maxDescriptionChars) {
+    } else if (maxDescriptionChars !== undefined && rawDescription.length > maxDescriptionChars) {
       warnings.push(
-        `description is ${rawDescription.length} characters; the target tool drops skills over ${desc.maxDescriptionChars}.`,
+        `description is ${rawDescription.length} characters; the target tool drops skills over ${maxDescriptionChars}.`,
       );
     }
   } catch {

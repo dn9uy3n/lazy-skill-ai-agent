@@ -5,8 +5,9 @@ import { PlatformMeta, TargetPlatform } from './types';
 
 /**
  * How a platform wants "rules" installed. Most tools read a folder of
- * standalone rule files; ZCode has no such folder and only reads AGENTS.md,
- * so a rule there is merged into a managed block inside that file instead.
+ * standalone rule files; ZCode and Kimi Code have no such folder and only read
+ * AGENTS.md, so a rule there is merged into a managed block inside that file
+ * instead.
  */
 export type RuleStrategy =
   | { kind: 'files'; dir: (projectPath: string) => string }
@@ -21,6 +22,12 @@ export interface PlatformDescriptor {
   writesSkillIndex: boolean;
   /** Hard cap this platform enforces on a skill's `description`; skills over it get dropped/ignored by the tool itself. */
   maxDescriptionChars?: number;
+  /**
+   * The tool fails to load a directory-form SKILL.md entirely when frontmatter
+   * `name` or `description` is missing (as opposed to tolerating the gap) —
+   * surface that as a warning on Apply even when no description cap applies.
+   */
+  requiresSkillFrontmatter?: boolean;
   /**
    * User-scope skill roots (segments under the user's home directory) this
    * platform also reads, highest-precedence first. Used only to warn when a
@@ -84,6 +91,27 @@ export const PLATFORMS: PlatformDescriptor[] = [
       ['.agents', 'skills'],
     ],
     note: 'Skills install to .zcode/skills/. Rules merge into AGENTS.md — ZCode has no rules/ folder.',
+  },
+  {
+    id: 'kimi',
+    label: 'Kimi Code',
+    skillsDir: p => path.join(p, '.kimi-code', 'skills'),
+    // Kimi Code follows the AGENTS.md convention for instructions (project
+    // root AGENTS.md; no KIMI.md, no rules/ folder), so a "rule" is merged
+    // into the same managed block ZCode uses. See syncAgentsMd().
+    rules: { kind: 'agents-md', file: p => path.join(p, 'AGENTS.md') },
+    // Like ZCode, Kimi injects each skill's own name+description into the
+    // system prompt itself, so an index would be noise. Worse, Kimi treats any
+    // .md file sitting directly at a skills root as a *flat skill* named after
+    // the file — a generated {skillsDir}/SKILL.md would register as a bogus
+    // skill named "SKILL". Never write one.
+    writesSkillIndex: false,
+    // A directory-form SKILL.md missing either frontmatter field fails to
+    // parse at all (Kimi documents no description length cap, unlike ZCode).
+    requiresSkillFrontmatter: true,
+    // No userSkillRoots: Kimi's precedence is documented as Project > User, so
+    // a same-named user-scope skill can never shadow the workspace copy.
+    note: 'Skills install to .kimi-code/skills/. Rules merge into AGENTS.md — Kimi Code has no rules/ folder.',
   },
 ];
 

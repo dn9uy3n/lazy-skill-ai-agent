@@ -1,6 +1,6 @@
 # Lazy Skill AI Agent
 
-VS Code extension to manage AI skills and rules for Claude Code, Antigravity, Cursor, and ZCode (z.ai).
+VS Code extension to manage AI skills and rules for Claude Code, Antigravity, Cursor, ZCode (z.ai), and Kimi Code.
 
 This is one half of a monorepo — `app/` is an Electron twin of this extension with near-identical
 logic. `platforms.ts` and `agentsMd.ts` are meant to be **byte-identical except for their header

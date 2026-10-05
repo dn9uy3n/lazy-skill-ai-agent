@@ -27,7 +27,7 @@ export interface RuleInfo {
   body?: string;
 }
 
-export type TargetPlatform = 'claude-code' | 'antigravity' | 'cursor' | 'zcode';
+export type TargetPlatform = 'claude-code' | 'antigravity' | 'cursor' | 'zcode' | 'kimi';
 
 /** Per-directory tally so the panel can show what each configured directory contributed. */
 export interface DirStat {

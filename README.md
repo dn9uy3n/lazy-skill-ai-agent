@@ -4,7 +4,7 @@
 
 # Lazy Skill AI Agent
 
-A tool to manage AI skills **and rules** for **Claude Code**, **Antigravity**, **Cursor**, and **ZCode (z.ai)**. Browse skills from multiple source directories and rule files, then add/remove them in your project through a visual interface.
+A tool to manage AI skills **and rules** for **Claude Code**, **Antigravity**, **Cursor**, **ZCode (z.ai)**, and **Kimi Code**. Browse skills from multiple source directories and rule files, then add/remove them in your project through a visual interface.
 
 ![Lazy Skill Manager screenshot](Resource/image.png)
 
@@ -48,10 +48,13 @@ When applied, the **entire skill folder** (markdown, scripts, helpers — everyt
 | **Antigravity** | `{project}/.agent/skills/{skill-name}/` |
 | **Cursor** | `{project}/.cursor/skills/{skill-name}/` |
 | **ZCode (z.ai)** | `{project}/.zcode/skills/{skill-name}/` |
+| **Kimi Code** | `{project}/.kimi-code/skills/{skill-name}/` |
 
 The platform toggle at the top of the UI controls which folder is read from / written to, and is remembered between sessions. Switching platforms updates the install state of each skill in the list accordingly — a skill installed for one platform is not installed or removed for another.
 
 > **ZCode note:** ZCode drops a skill outright if its frontmatter is missing `name`/`description`, or if `description` exceeds 1024 characters. Apply still installs the skill, but shows a warning so you can fix the source file.
+
+> **Kimi Code note:** Kimi Code likewise fails to load a directory-form `SKILL.md` missing `name` or `description` in its frontmatter (no documented length cap). Apply installs the skill but warns. Kimi also recognizes loose `.md` files at the skills root as "flat" skills — which is why no `SKILL.md` index is generated there (see below).
 
 ### Auto-generated skills index (`SKILL.md`)
 
@@ -63,7 +66,7 @@ After every Apply, an index file is generated at the **root of the skills folder
 
 The purpose is to let an AI agent quickly discover the right skill without scanning every subfolder. The index is regenerated on each Apply and deleted automatically when no skills remain. Do not edit it manually — changes will be overwritten.
 
-This index is **not** generated for ZCode: ZCode already surfaces every skill's own `name` and `description` into context itself, so a separate index file would just be unused noise.
+This index is **not** generated for ZCode: ZCode already surfaces every skill's own `name` and `description` into context itself, so a separate index file would just be unused noise. It is also not generated for Kimi Code — for the same reason, and because Kimi Code would mistake a root-level `SKILL.md` for a flat skill literally named `SKILL`.
 
 Example:
 
@@ -93,14 +96,15 @@ Add rule files individually via **+ Add Rule File** (multi-select supported), th
 | **Antigravity** | `{project}/.agents/rules/{rule-name}.md` |
 | **Cursor** | `{project}/.cursor/rules/{rule-name}.md` |
 | **ZCode (z.ai)** | — merged into `{project}/AGENTS.md` (see below) |
+| **Kimi Code** | — merged into `{project}/AGENTS.md` (see below) |
 
 > Note: Antigravity uses `.agent/skills/` (singular) for skills but `.agents/rules/` (plural) for rules — this matches Antigravity's own conventions.
 
 A rule's name is taken from its frontmatter `name` field (or the filename if no frontmatter). The original file extension is preserved on install.
 
-#### Rules on ZCode: merged into AGENTS.md, not copied as files
+#### Rules on ZCode and Kimi Code: merged into AGENTS.md, not copied as files
 
-ZCode has no rules folder at all — it only reads project instructions from `AGENTS.md`. So when the target platform is ZCode, a checked rule is not copied as a standalone file; instead its body (frontmatter stripped) is merged into a managed block inside `{project}/AGENTS.md`, delimited by HTML comment markers:
+ZCode and Kimi Code have no rules folder at all — they only read project instructions from `AGENTS.md`. So when the target platform is ZCode or Kimi Code, a checked rule is not copied as a standalone file; instead its body (frontmatter stripped) is merged into a managed block inside `{project}/AGENTS.md`, delimited by HTML comment markers:
 
 ```markdown
 <!-- lazy-skill-ai-agent:begin — do not edit inside this block -->

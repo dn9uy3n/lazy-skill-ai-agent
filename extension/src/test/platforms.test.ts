@@ -14,6 +14,7 @@ const EXPECTED_SKILLS_DIR: Record<TargetPlatform, string> = {
   antigravity: path.join(PROJECT, '.agent', 'skills'),
   cursor: path.join(PROJECT, '.cursor', 'skills'),
   zcode: path.join(PROJECT, '.zcode', 'skills'),
+  kimi: path.join(PROJECT, '.kimi-code', 'skills'),
 };
 
 test('platform ids are unique', () => {
@@ -22,7 +23,7 @@ test('platform ids are unique', () => {
 });
 
 test('getPlatform is total over every TargetPlatform member', () => {
-  const allIds: TargetPlatform[] = ['claude-code', 'antigravity', 'cursor', 'zcode'];
+  const allIds: TargetPlatform[] = ['claude-code', 'antigravity', 'cursor', 'zcode', 'kimi'];
   for (const id of allIds) {
     assert.equal(getPlatform(id).id, id);
   }
@@ -47,9 +48,9 @@ test('skillsDir matches the legacy per-platform paths', () => {
   }
 });
 
-test('rules.kind is "agents-md" only for zcode', () => {
+test('rules.kind is "agents-md" for zcode and kimi, "files" for the rest', () => {
   for (const p of PLATFORMS) {
-    if (p.id === 'zcode') {
+    if (p.id === 'zcode' || p.id === 'kimi') {
       assert.equal(p.rules.kind, 'agents-md');
     } else {
       assert.equal(p.rules.kind, 'files');
@@ -76,14 +77,19 @@ test('legacy folder-based rule dirs match the pre-refactor switch', () => {
   }
 });
 
-test('zcode has no rules folder and merges into AGENTS.md instead', () => {
-  const rules = getPlatform('zcode').rules;
-  assert.equal(rules.kind, 'agents-md');
-  if (rules.kind === 'agents-md') assert.equal(rules.file(PROJECT), path.join(PROJECT, 'AGENTS.md'));
+test('zcode and kimi have no rules folder and merge into AGENTS.md instead', () => {
+  for (const id of ['zcode', 'kimi'] as const) {
+    const rules = getPlatform(id).rules;
+    assert.equal(rules.kind, 'agents-md');
+    if (rules.kind === 'agents-md') assert.equal(rules.file(PROJECT), path.join(PROJECT, 'AGENTS.md'));
+  }
 });
 
-test('zcode skips the generated skills index; the other three write it', () => {
+test('zcode and kimi skip the generated skills index; the other three write it', () => {
+  // For kimi this is load-bearing, not cosmetic: a root-level SKILL.md would be
+  // picked up as a *flat skill* named "SKILL".
   assert.equal(getPlatform('zcode').writesSkillIndex, false);
+  assert.equal(getPlatform('kimi').writesSkillIndex, false);
   assert.equal(getPlatform('claude-code').writesSkillIndex, true);
   assert.equal(getPlatform('antigravity').writesSkillIndex, true);
   assert.equal(getPlatform('cursor').writesSkillIndex, true);
@@ -94,19 +100,32 @@ test('only zcode declares a description length cap', () => {
   assert.equal(getPlatform('claude-code').maxDescriptionChars, undefined);
   assert.equal(getPlatform('antigravity').maxDescriptionChars, undefined);
   assert.equal(getPlatform('cursor').maxDescriptionChars, undefined);
+  assert.equal(getPlatform('kimi').maxDescriptionChars, undefined);
 });
 
-test('platformUiList returns every platform with an id, label, and (for zcode) an explanatory note', () => {
+test('only kimi requires skill frontmatter without a description cap', () => {
+  // Kimi fails to parse a directory-form SKILL.md missing name/description;
+  // zcode gets the same warnings via its cap, the rest tolerate the gap.
+  assert.equal(getPlatform('kimi').requiresSkillFrontmatter, true);
+  assert.equal(getPlatform('zcode').requiresSkillFrontmatter, undefined);
+  assert.equal(getPlatform('claude-code').requiresSkillFrontmatter, undefined);
+  assert.equal(getPlatform('antigravity').requiresSkillFrontmatter, undefined);
+  assert.equal(getPlatform('cursor').requiresSkillFrontmatter, undefined);
+});
+
+test('platformUiList returns every platform with an id, label, and (for the agents-md platforms) an explanatory note', () => {
   // The Rules UI is identical for every platform (same "pick which configured
   // rules apply" checkbox list) — only the backend install target differs, so
   // the panel must never hide it for a platform. The AGENTS.md-merge behavior
-  // is instead surfaced to the user only through zcode's note text.
+  // is instead surfaced to the user only through the platform's note text.
   const list = platformUiList();
   assert.equal(list.length, PLATFORMS.length);
   for (const p of list) {
     assert.ok(p.id);
     assert.ok(p.label);
   }
-  const zcode = list.find(p => p.id === 'zcode');
-  assert.match(zcode?.note ?? '', /AGENTS\.md/);
+  for (const id of ['zcode', 'kimi'] as const) {
+    const meta = list.find(p => p.id === id);
+    assert.match(meta?.note ?? '', /AGENTS\.md/);
+  }
 });

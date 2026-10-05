@@ -3,8 +3,9 @@
  * split out from `skillInstaller.ts` so it has no `vscode` dependency and can
  * be unit-tested with `node:test` outside the extension host.
  *
- * ZCode (and any future `agents-md`-strategy platform, see `platforms.ts`)
- * has no rules folder — it only reads AGENTS.md into context. So a selected
+ * ZCode and Kimi Code (the `agents-md`-strategy platforms, see
+ * `platforms.ts`) have no rules folder — they only read AGENTS.md into
+ * context. So a selected
  * "rule" is merged into a managed block inside that file, bounded by these
  * markers, rather than copied as a standalone file. Everything outside the
  * block is left exactly as the user wrote it.
